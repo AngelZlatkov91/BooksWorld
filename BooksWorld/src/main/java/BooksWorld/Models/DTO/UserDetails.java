@@ -1,16 +1,17 @@
 package BooksWorld.Models.DTO;
 
-public class UserRegistrationDTO {
+public class UserDetails {
 
     private String email;
-
     private String fullName;
 
-    private String password;
+    public UserDetails (){
 
+    }
 
-    public UserRegistrationDTO(){
-
+    public UserDetails(String email, String fullName) {
+        this.email = email;
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -28,14 +29,4 @@ public class UserRegistrationDTO {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
 }

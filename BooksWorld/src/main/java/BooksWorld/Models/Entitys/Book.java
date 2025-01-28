@@ -1,15 +1,31 @@
 package BooksWorld.Models.Entitys;
 
-public class Book extends BaseEntity {
-    private String author;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "books")
+public class Book extends BaseEntity {
+
+    @Column(nullable = false)
+    private String author;
+    @Column(nullable = false)
     private String bookName;
 
+    @Column(nullable = false)
     private String genre;
+
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @Column(nullable = false)
     private boolean isOnLoad;
 
+    @ManyToOne
     private User isOwner;
-
+    @ManyToOne
     private User onLoadUser;
 
     public Book (){
@@ -63,5 +79,13 @@ public class Book extends BaseEntity {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
