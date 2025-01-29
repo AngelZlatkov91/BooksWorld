@@ -1,11 +1,23 @@
 package BooksWorld.Models.DTO;
 
+import BooksWorld.Validation.UniqueUserEmail;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class UserRegistrationDTO {
 
+    @Email
+    @NotEmpty
+    @UniqueUserEmail
     private String email;
 
+    @NotEmpty
+    @Size(min = 3)
     private String fullName;
 
+    @NotEmpty
+    @Size(min = 3, max = 20)
     private String password;
 
 

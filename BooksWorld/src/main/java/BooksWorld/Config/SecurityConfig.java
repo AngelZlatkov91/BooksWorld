@@ -19,16 +19,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+                .cors().and()
+                .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/login","/user/register").permitAll()
+                        .requestMatchers("/api/login","/api/register").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin().disable()
                 .logout(
                         logout-> {
                             logout
                                     // the url where we should post something in order to perform logout
-                                    .logoutUrl("/user/logout")
+                                    .logoutUrl("/api/logout")
                                     // where to go logged out?
                                     .logoutSuccessUrl("/home")
                                     // invalidate the http session

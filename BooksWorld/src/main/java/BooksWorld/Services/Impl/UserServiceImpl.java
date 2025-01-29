@@ -37,10 +37,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(UserRegistrationDTO userRegistrationDTO) throws Exception {
 
-        Optional<User> getByEmail = userRepository.findByEmail(userRegistrationDTO.getEmail());
-      if (getByEmail.isPresent()) {
-          throw new Exception("Email already in use!");
-      }
       try {
           userRepository.save(getUser(userRegistrationDTO));
           applicationEventPublisher.publishEvent(new UserRegisterEvent("UserService",
