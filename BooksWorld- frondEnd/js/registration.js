@@ -6,11 +6,11 @@ async function registerUser() {
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirm-password").value;
     const formElement = document.getElementById('register-form');
-    const userData = {  email,fullName, password };
+    const userData = {  email, fullName, password, confirmPassword };
     const createElement = document.createElement('p');
     createElement.classList.add('error-p');
 
-    function checkDataValidation(fullName,email,password,confirmPassword) {
+    function checkDataValidation(fullName, email, password, confirmPassword) {
         if (!email || !fullName || !password || !confirmPassword) {       
             createElement.textContent = 'Must not be empty!';
             formElement.appendChild(createElement);
@@ -32,16 +32,15 @@ async function registerUser() {
         confirmPassword.value = "";
     }
     
-    checkDataValidation();
+    
 
-    if (!checkDataValidation) {
+    if (!checkDataValidation(fullName, email, password, confirmPassword)) {
         return;
     }
 
     try {
         
         createElement.remove();
-        clearInputs();
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -49,17 +48,21 @@ async function registerUser() {
             },
             body: JSON.stringify(userData)
         });
-        console.log(response);
+        
         
         if (response.ok) {
             // const result = await response.json();
             console.log("Регистрацията е успешна:");
             alert("User registered successfully!");
         } else {
+             const textfrom = response.body.values;
             const error = await response.text();
+            console.error(error);
+            console.error(textfrom);
             console.error("Грешка при регистрацията:", error);
             alert(`Registration failed: ${error}`);
         }
+        clearInputs();
     } catch (error) {
         console.error("Възникна грешка при заявката:", error);
         alert("An error occurred during registration.");

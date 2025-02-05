@@ -1,10 +1,13 @@
 package BooksWorld.Models.DTO;
 
+import BooksWorld.Validation.EqualPassword;
 import BooksWorld.Validation.UniqueUserEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+@EqualPassword(first = "password",
+        second = "confirmPassword")
 public class UserRegistrationDTO {
 
     @Email
@@ -19,6 +22,10 @@ public class UserRegistrationDTO {
     @NotEmpty
     @Size(min = 3, max = 20)
     private String password;
+
+    @NotEmpty
+    @Size(min = 3, max = 20)
+    private String confirmPassword;
 
 
     public UserRegistrationDTO(){
@@ -49,5 +56,11 @@ public class UserRegistrationDTO {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
 
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
 }

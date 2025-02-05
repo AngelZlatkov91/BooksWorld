@@ -8,6 +8,6 @@ public interface UserService {
     void registerUser(UserRegistrationDTO userRegistrationDTO) throws Exception;
 
 
-    String login(LoginUserDTO loginUserDTO) throws Exception;
+
 
 }
