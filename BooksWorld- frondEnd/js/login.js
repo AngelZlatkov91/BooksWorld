@@ -33,6 +33,7 @@ async function registerUser() {
         if (response.ok) {
             const result = await response.json();
             localStorage.setItem('token', result.token);
+            window.location.href = '/public/index.html';
             console.log("Регистрацията е успешна:");
             alert("User registered successfully!");
         } else {
