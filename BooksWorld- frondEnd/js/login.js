@@ -1,19 +1,30 @@
 async function registerUser() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        window.location.href = '/public/index.html';
+       }
     const url = 'http://localhost:8080/api/login';
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const email = emailInput.value;
+    const password = passwordInput.value;
+  
     const formElement = document.getElementById('register-form');
     const userData = {  email, password };
     const createElement = document.createElement('p');
     createElement.classList.add('error-p');
 
-
+    if (!email || !password) {
+        createElement.textContent = 'Email or password must not be empty!';
+        formElement.appendChild(createElement);
+        clearInputs();
+        return;
+    }
 
     function clearInputs() {
        
-        email.value = "";
-        password.value = "";
+        emailInput.textContent = "";
+        passwordInput.textContent = "";
         
     }
     

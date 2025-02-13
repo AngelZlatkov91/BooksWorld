@@ -1,4 +1,9 @@
 async function registerUser() {
+
+    const token = localStorage.getItem('token');
+    if (token) {
+        window.location.href = '/public/index.html';
+       }
     const url = 'http://localhost:8080/api/register';
 
     const fullName = document.getElementById("username").value;
@@ -53,6 +58,7 @@ async function registerUser() {
         if (response.ok) {
             // const result = await response.json();
             console.log("Регистрацията е успешна:");
+            window.location.href = '/public/login.html';
             alert("User registered successfully!");
         } else {
              const textfrom = response.body.values;

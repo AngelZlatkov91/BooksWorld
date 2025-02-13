@@ -3,6 +3,9 @@ async function loadHomePage() {
         const url = 'http://localhost:8080/api/home';
        const getNameUser = document.getElementById('name_user');
        const token = localStorage.getItem('token');
+       if (!token) {
+        console.error('Don have Authorization');
+       }
         console.log(token);
 
         try {
@@ -35,7 +38,11 @@ async function loadHomePage() {
     
 }
 
-
-
+async function logout() {
+    localStorage.removeItem('token');
+    
+}
 
 document.addEventListener('DOMContentLoaded', loadHomePage);
+
+document.getElementById("logout-btn").addEventListener("click", logout);
