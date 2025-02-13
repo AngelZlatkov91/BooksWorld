@@ -1,23 +1,21 @@
 package BooksWorld.Models.DTO;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CreateBookDTO {
-    private String owner;
+
+    @NotBlank
     private String bookName;
+    @NotBlank
     private String author;
-
+    @NotBlank
     private String imageUrl;
-
+    @NotBlank
     private String genre;
 
     public CreateBookDTO(){}
 
-    public String getOwner() {
-        return owner;
-    }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
 
     public String getBookName() {
         return bookName;

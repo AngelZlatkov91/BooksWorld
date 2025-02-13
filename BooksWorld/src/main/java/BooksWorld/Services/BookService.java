@@ -8,7 +8,7 @@ import java.util.List;
 public interface BookService {
 
 
-    BookDetailsDTO createBook(CreateBookDTO createBookDTO, String name) throws Exception;
+    void createBook(CreateBookDTO createBookDTO, String name) throws Exception;
 
     void deleteBook(String name);
 

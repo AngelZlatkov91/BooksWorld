@@ -7,6 +7,7 @@ import BooksWorld.Models.Entitys.User;
 import BooksWorld.Repositories.BookRepository;
 import BooksWorld.Repositories.UserRepository;
 import BooksWorld.Services.BookService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,16 +25,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDetailsDTO createBook(CreateBookDTO createBookDTO,String name) throws Exception {
+    @Transactional
+    public void createBook(CreateBookDTO createBookDTO,String name) throws Exception {
         Optional<User> byEmail = userRepository.findByEmail(name);
         if (byEmail.isEmpty()) {
             throw new Exception ("User dont exist!");
         }
-         Book book = mapToEntity(createBookDTO);
+        Book book = mapToEntity(createBookDTO);
         book.setIsOwner(byEmail.get());
         bookRepository.save(book);
         byEmail.get().getMyBooks().add(book);
-        return mapToDetails(book);
+        userRepository.save(byEmail.get());
     }
 
     private BookDetailsDTO mapToDetails(Book book) {
@@ -45,7 +47,6 @@ public class BookServiceImpl implements BookService {
         book.setBookName(createBookDTO.getBookName());
         book.setAuthor(createBookDTO.getAuthor());
         book.setGenre(createBookDTO.getGenre());
-        book.setOnLoad(false);
         book.setImageUrl(createBookDTO.getImageUrl());
         return book;
     }
