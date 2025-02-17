@@ -1,21 +1,25 @@
 async function registerUser() {
 
     const token = localStorage.getItem('token');
-    if (token) {
-        window.location.href = '/public/index.html';
-       }
-    const url = 'http://localhost:8080/api/register';
 
-    const fullName = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirm-password").value;
+    
+    const url = 'http://localhost:8080/api/register';
+    const fullNameInput = document.getElementById("username");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+
+    const fullName = fullNameInput.value;
+    const email = emailInput.value;
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
     const formElement = document.getElementById('register-form');
     const userData = {  email, fullName, password, confirmPassword };
     const createElement = document.createElement('p');
     createElement.classList.add('error-p');
 
     function checkDataValidation(fullName, email, password, confirmPassword) {
+        
         if (!email || !fullName || !password || !confirmPassword) {       
             createElement.textContent = 'Must not be empty!';
             formElement.appendChild(createElement);
@@ -27,15 +31,10 @@ async function registerUser() {
             formElement.appendChild(createElement);
             return false;
         }
+
         return true;
     }
 
-    function clearInputs() {
-        fullName.value = "";
-        email.value = "";
-        password.value = "";
-        confirmPassword.value = "";
-    }
     
     
 
@@ -68,7 +67,7 @@ async function registerUser() {
             console.error("Грешка при регистрацията:", error);
             alert(`Registration failed: ${error}`);
         }
-        clearInputs();
+        
     } catch (error) {
         console.error("Възникна грешка при заявката:", error);
         alert("An error occurred during registration.");

@@ -2,6 +2,7 @@ package BooksWorld.Services.Impl;
 
 import BooksWorld.Models.DTO.BookDetailsDTO;
 import BooksWorld.Models.DTO.CreateBookDTO;
+import BooksWorld.Models.DTO.MyBooks;
 import BooksWorld.Models.Entitys.Book;
 import BooksWorld.Models.Entitys.User;
 import BooksWorld.Repositories.BookRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -39,7 +41,7 @@ public class BookServiceImpl implements BookService {
     }
 
     private BookDetailsDTO mapToDetails(Book book) {
-       return new BookDetailsDTO(book.getBookName(), book.getAuthor(), book.getImageUrl(), book.getGenre(), book.isOnLoad());
+       return new BookDetailsDTO(book.getId(), book.getBookName(), book.getAuthor(), book.getImageUrl(), book.getGenre(), book.isOnLoad());
     }
 
     private Book mapToEntity(CreateBookDTO createBookDTO) {
@@ -52,17 +54,50 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(String name) {
+    @Transactional
+    public void deleteBook(Long id, String email) {
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        Optional<Book> byId = bookRepository.findById(id);
+        if (!byId.get().isOnLoad()) {
+            byEmail.get().getMyBooks().remove(byId.get());
+            bookRepository.deleteById(id);
+        }
+
 
     }
 
     @Override
-    public List<BookDetailsDTO> getAllBooks() {
-        return null;
+    public List<BookDetailsDTO> getAllBooks(String email) {
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        List<Book> allBooksExceptOwner = bookRepository.findAllByIsOwnerIsNot(byEmail.get());
+        return allBooksExceptOwner.stream()
+                .filter(book -> !book.isOnLoad())
+                .map(this::mapToDetails)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<BookDetailsDTO> getAllBookByUser(String email) {
-        return null;
+    public MyBooks getAllBookByUser(String email) {
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        List<Book> myBooks = byEmail.get().getMyBooks();
+        List<Book> onLoanBooks = byEmail.get().getOnLoanBooks();
+        List<BookDetailsDTO> myBooksList = myBooks.stream().map(this::mapToDetails).collect(Collectors.toList());
+        List<BookDetailsDTO> onLoadBooksList = onLoanBooks.stream().map(this::mapToDetails).collect(Collectors.toList());
+        MyBooks myBooks1 = new MyBooks();
+        myBooks1.setMyBooks(myBooksList);
+        myBooks1.setBarrowBooks(onLoadBooksList);
+        return myBooks1;
+    }
+
+    @Override
+    public void getTheBook(Long id, String name) {
+        Optional<User> byEmail = userRepository.findByEmail(name);
+        Optional<Book> byId = bookRepository.findById(id);
+        byId.get().setOnLoad(true);
+        byId.get().setOnLoadUser(byEmail.get());
+        bookRepository.save(byId.get());
+        byEmail.get().getOnLoanBooks().add(byId.get());
+        userRepository.save(byEmail.get());
+
     }
 }

@@ -2,6 +2,8 @@ package BooksWorld.Models.DTO;
 
 public class BookDetailsDTO {
 
+    private Long id;
+
     private String bookName;
     private String author;
     private String imageUrl;
@@ -12,12 +14,17 @@ public class BookDetailsDTO {
 
     public BookDetailsDTO(){}
 
-    public BookDetailsDTO(String bookName, String author, String imageUrl, String genre, boolean isOnLoad) {
+    public BookDetailsDTO(Long id, String bookName, String author, String imageUrl, String genre, boolean isOnLoad) {
+        this.id = id;
         this.bookName = bookName;
         this.author = author;
         this.imageUrl = imageUrl;
         this.genre = genre;
         this.isOnLoad = isOnLoad;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getBookName() {

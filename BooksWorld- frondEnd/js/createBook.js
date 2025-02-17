@@ -1,4 +1,6 @@
 async function createBook() {
+    const token = localStorage.getItem('token');
+    
     const url = 'http://localhost:8080/api/create';
     const bookNameInput = document.getElementById("title");
     const authorInput = document.getElementById("author");
@@ -10,10 +12,7 @@ async function createBook() {
     const imageUrl = genreInput.value;
     const genre = imageUrlInput.value;
     const userData = {  bookName, author, imageUrl, genre};
-    const token = localStorage.getItem('token');
-    if (!token) {
-        console.error('Don have Authorization');
-       }
+    
     const createElement = document.createElement('p');
     createElement.classList.add('error-p');
 
@@ -72,4 +71,12 @@ async function createBook() {
     }
 }
 
+async function cherUSerData() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = '/public/login.html';
+        console.error('Don have Authorization');
+       }  
+}
+document.addEventListener('DOMContentLoaded', cherUSerData);
 document.getElementById("book-btn").addEventListener("click", createBook);
